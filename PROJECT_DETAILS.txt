@@ -1,0 +1,357 @@
+====================================================================
+PROJECT DETAILS - AI Resume Analyzer (ResumeAI)
+Full Step-by-Step Documentation
+====================================================================
+
+Table of Contents
+-----------------
+1.  Project Overview
+2.  Technology Stack
+3.  Project Folder Structure
+4.  How the Application Works (Flow)
+5.  Step-by-Step Setup & Installation
+6.  How to Run the Project
+7.  Key Files Explained (Views, Models, URLs, Templates)
+8.  Features Implemented
+9.  Errors Fixed During Development
+10. Known Limitations / Future Improvements
+
+
+====================================================================
+1. PROJECT OVERVIEW
+====================================================================
+This is a Django web application called "ResumeAI" that analyzes a
+user's resume (PDF or DOCX) and provides:
+
+   - An ATS (Applicant Tracking System) compatibility score
+   - A grammar score
+   - A keyword/skills score
+   - An overall score
+   - Detected technical skills
+   - Actionable suggestions for improvement
+
+The user uploads a resume, the application extracts the text from the
+file, analyzes it against common ATS keywords and sections, and
+displays the results in a friendly dashboard-style webpage.
+
+
+====================================================================
+2. TECHNOLOGY STACK
+====================================================================
+   - Python 3.14 (with a virtual environment `venv`)
+   - Django 6.1
+   - SQLite database (db.sqlite3) - default Django database
+   - pdfplumber  - for extracting text from PDF files
+   - python-docx - for extracting text from DOCX files
+   - HTML5 / CSS3 - for the front-end templates
+   - Django static files (static/css/style.css)
+
+
+====================================================================
+3. PROJECT FOLDER STRUCTURE
+====================================================================
+AI-Resume-Analyzer/
+│
+├── AI-Resume-Analyzer/            <-- (main Django project folder)
+│   ├── manage.py                  <-- Django's command-line utility
+│   ├── db.sqlite3                 <-- SQLite database file
+│   │
+│   ├── resume_analyzer/           <-- Project configuration package
+│   │   ├── __init__.py
+│   │   ├── settings.py            <-- Django settings/config
+│   │   ├── urls.py                <-- Root URL routing
+│   │   ├── asgi.py                <-- ASGI server entry
+│   │   └── wsgi.py                <-- WSGI server entry
+│   │
+│   ├── resumes/                   <-- Main application package
+│   │   ├── __init__.py
+│   │   ├── admin.py               <-- Django admin registration
+│   │   ├── apps.py                <-- App config
+│   │   ├── models.py              <-- Resume database model
+│   │   ├── views.py               <-- View functions (business logic)
+│   │   ├── urls.py                <-- App-level URL routing
+│   │   ├── parser.py              <-- PDF/DOCX text extraction
+│   │   ├── analyzer.py            <-- Resume analysis logic
+│   │   ├── tests.py               <-- Automated tests
+│   │   └── migrations/            <-- Database migrations
+│   │       └── 0001_initial.py
+│   │
+│   ├── templates/                 <-- HTML templates
+│   │   ├── home.html              <-- Landing page
+│   │   ├── upload.html            <-- Resume upload page
+│   │   ├── result.html            <-- Analysis results page
+│   │   └── dashboard.html         <-- User dashboard
+│   │
+│   ├── static/
+│   │   └── css/
+│   │       └── style.css          <-- Stylesheet
+│   │
+│   ├── media/                     <-- Uploaded resume files
+│   │   └── resumes/               <-- Stored resume files folder
+│   │
+│   └── venv/                      <-- Python virtual environment
+│
+└── PROJECT_DETAILS.txt            <-- This documentation file
+
+
+====================================================================
+4. HOW THE APPLICATION WORKS (FLOW)
+====================================================================
+Step 1 - User visits the home page ("/")
+        Rendered by `home` view using home.html.
+
+Step 2 - User clicks "Analyze My Resume" -> goes to "/upload/"
+        Rendered by `upload_resume` view using upload.html.
+        A form with a file input appears (accepts .pdf and .docx).
+
+Step 3 - User selects a resume file and submits the form (POST).
+        The view:
+          a) Checks a file was selected.
+          b) Validates the file extension (.pdf or .docx).
+          c) Creates a Resume database record (with user=None).
+          d) Calls extract_resume_text(file.path) to read the text.
+          e) Calls analyze_resume(text) to score the resume.
+          f) Saves the results back to the Resume record.
+          g) Redirects to "/result/<resume_id>/".
+
+Step 4 - User sees the analysis results ("/result/<id>/")
+        Rendered by `result` view using result.html.
+        Shows the ATS, grammar, keyword, and overall scores,
+        the detected skills, and the suggestions.
+
+Step 5 - User can view the dashboard ("/dashboard/")
+        Rendered by `dashboard` view using dashboard.html.
+        Lists all previously analyzed resumes with their scores.
+
+
+====================================================================
+5. STEP-BY-STEP SETUP & INSTALLATION
+====================================================================
+1. Install Python 3.x on your computer.
+   (This project was built and tested with Python 3.14)
+
+2. Open a terminal and navigate to the project folder:
+       cd C:\AI-Resume-Analyzer\AI-Resume-Analyzer
+
+3. Create a virtual environment (if not already present):
+       python -m venv venv
+
+4. Activate the virtual environment:
+   - On Windows (PowerShell):
+       venv\Scripts\Activate.ps1
+   - On Windows (Command Prompt):
+       venv\Scripts\activate.bat
+   - On macOS/Linux:
+       source venv/bin/activate
+
+5. Install the required packages:
+       pip install django
+       pip install pdfplumber
+       pip install python-docx
+
+   (These install Django and the file-parsing libraries.)
+
+6. Apply database migrations (creates the database tables):
+       python manage.py migrate
+
+   (If you already have db.sqlite3 and migrations, this keeps it up to date.)
+
+7. (Optional) Create a superuser to access the Django admin:
+       python manage.py createsuperuser
+
+8. Run the development server:
+       python manage.py runserver
+
+9. Open your browser and go to:
+       http://127.0.0.1:8000/
+
+
+====================================================================
+6. HOW TO RUN THE PROJECT
+====================================================================
+IMPORTANT: Always use the virtual environment's Python, otherwise you
+will get "ModuleNotFoundError: No module named 'django'".
+
+Option A - Activate the venv first, then use python:
+    cd C:\AI-Resume-Analyzer\AI-Resume-Analyzer
+    venv\Scripts\Activate.ps1
+    python manage.py runserver
+
+Option B - Run directly with the venv Python (no activation needed):
+    cd C:\AI-Resume-Analyzer\AI-Resume-Analyzer
+    .\venv\Scripts\python.exe manage.py runserver
+
+Then open: http://127.0.0.1:8000/
+
+Useful commands:
+    - Run system checks:      python manage.py check
+    - Open the shell:         python manage.py shell
+    - Create migrations:      python manage.py makemigrations
+    - Apply migrations:       python manage.py migrate
+    - Create admin user:      python manage.py createsuperuser
+
+
+====================================================================
+7. KEY FILES EXPLAINED
+====================================================================
+
+------------------------------------------------------------
+A) resume_analyzer/settings.py  (Project configuration)
+------------------------------------------------------------
+   - BASE_DIR: points to the project root.
+   - INSTALLED_APPS: includes Django built-ins plus the `resumes` app.
+   - TEMPLATES['DIRS']: set to [BASE_DIR / 'templates'] so Django
+     finds the HTML templates.
+   - STATIC_URL / STATICFILES_DIRS: configured to serve
+     static/css/style.css.
+   - MEDIA_URL / MEDIA_ROOT: configured to store and serve uploaded
+     resume files under /media/.
+
+------------------------------------------------------------
+B) resume_analyzer/urls.py  (Root URL configuration)
+------------------------------------------------------------
+   - Routes "/admin/" to Django admin.
+   - Includes all URLs from the `resumes` app at the root "/".
+   - Serves media files when DEBUG is True.
+
+------------------------------------------------------------
+C) resumes/urls.py  (App URL configuration)
+------------------------------------------------------------
+   - ""            -> home view          (name="home")
+   - "upload/"     -> upload_resume view (name="upload")
+   - "result/<int:resume_id>/" -> result view (name="result")
+   - "dashboard/"  -> dashboard view     (name="dashboard")
+
+------------------------------------------------------------
+D) resumes/models.py  (Database model)
+------------------------------------------------------------
+   Resume model fields:
+   - user: ForeignKey to User (nullable - allows anonymous uploads)
+   - file: FileField that uploads to 'resumes/'
+   - uploaded_at: DateTime (auto set)
+   - extracted_text: TextField (the raw resume text)
+   - ats_score, grammar_score, keyword_score, overall_score: Integer
+   - suggestions: TextField (recommendations)
+
+------------------------------------------------------------
+E) resumes/parser.py  (Text extraction)
+------------------------------------------------------------
+   - extract_pdf_text(): uses pdfplumber to read all PDF pages.
+   - extract_docx_text(): uses python-docx to read DOCX paragraphs.
+   - extract_resume_text(): picks the correct extractor based on the
+     file extension (.pdf or .docx).
+
+------------------------------------------------------------
+F) resumes/analyzer.py  (Analysis logic)
+------------------------------------------------------------
+   - COMMON_SKILLS: a list of common technical skills to search for.
+   - analyze_resume(text):
+       * Finds which skills are present in the text.
+       * Computes an ATS score starting at 40, adding points for:
+           - length > 1000 chars (+15)
+           - presence of education (+10)
+           - experience (+10)
+           - skills (+10)
+           - projects (+10)
+           - contact (+5)
+       * Caps the score at 100.
+       * Generates suggestions for missing sections (e.g., summary,
+         projects, experience, skills).
+       * Returns a dict with ats_score, grammar_score, keyword_score,
+         overall_score, skills, and suggestions.
+
+------------------------------------------------------------
+G) resumes/views.py  (Business logic / controllers)
+------------------------------------------------------------
+   - home(request): renders home.html.
+   - upload_resume(request):
+       * GET -> shows upload.html.
+       * POST -> validates file, creates Resume, extracts text,
+         analyzes, saves results, redirects to result page.
+   - result(request, resume_id): fetches a Resume, re-runs analysis to
+     get skills, renders result.html.
+   - dashboard(request): filters resumes (user=None), renders
+     dashboard.html listing all analyzed resumes.
+
+------------------------------------------------------------
+H) Templates (HTML)
+------------------------------------------------------------
+   - home.html: Landing page with hero and feature cards.
+   - upload.html: File upload form (POST with CSRF token).
+   - result.html: Displays scores, skills, and suggestions.
+   - dashboard.html: Lists all uploaded resumes with scores.
+
+------------------------------------------------------------
+I) static/css/style.css
+------------------------------------------------------------
+   - Contains all styling for the navbar, hero, buttons, cards,
+     dashboard, upload boxes, and result sections.
+
+
+====================================================================
+8. FEATURES IMPLEMENTED
+====================================================================
+   - Resume upload (PDF and DOCX only).
+   - File type validation with user-friendly error messages.
+   - Automatic text extraction from PDF and DOCX files.
+   - ATS compatibility scoring.
+   - Grammar score (currently a fixed demonstration value).
+   - Keyword/skills detection against a list of common skills.
+   - Overall score calculation.
+   - Actionable suggestions for improving the resume.
+   - Results page showing detailed analysis.
+   - Dashboard listing all analyzed resumes.
+   - Responsive, styled front-end using CSS.
+
+
+====================================================================
+9. ERRORS FIXED DURING DEVELOPMENT
+====================================================================
+1) settings.py error: "NameError: name 'ba' is not defined"
+   - Cause: The template DIRS value was a bad variable.
+   - Fix: Set 'DIRS': [BASE_DIR / 'templates'].
+
+2) views.py syntax errors (e.g., "user", "user=no", "user=None"
+   reported as invalid syntax / unexpected character).
+   - Cause: Incomplete or broken edits in the file.
+   - Fix: Cleaned up the Resume.objects.create block to use the
+     correct Python syntax.
+
+3) Misspelled command "pytohn" (typo for python).
+   - Fix: Use the correct command `python`.
+
+4) "ModuleNotFoundError: No module named 'django'"
+   - Cause: Running `python` without activating the virtual environment.
+   - Fix: Use the venv Python: .\venv\Scripts\python.exe
+
+5) "TemplateDoesNotExist: upload.html" (500 error on /upload/)
+   - Cause: The template file was misnamed "uplode.html" (typo) while
+     the view referenced "upload.html".
+   - Fix: Renamed templates/uplode.html to templates/upload.html and
+     fixed the broken first line "% load static %}" -> "{% load static %}".
+
+6) Dashboard page not showing (404 /accounts/login/)
+   - Cause: The dashboard view had @login_required, but no login URL
+     was configured, so unauthenticated users were redirected to a
+     non-existent login page.
+   - Fix: Commented out @login_required and changed the filter to
+     user=None so uploaded resumes display without login.
+
+
+====================================================================
+10. KNOWN LIMITATIONS / FUTURE IMPROVEMENTS
+====================================================================
+   - Grammar score is a fixed placeholder (75) and not a real check.
+   - The ATS score is a simple heuristic, not a full ATS simulation.
+   - Resumes are stored as user=None; a proper authentication/login
+     system and per-user filtering could be added.
+   - No pagination on the dashboard for many resumes.
+   - No support for .txt or .rtf file formats yet.
+   - Could add a real login/register flow so users can save their
+     history.
+   - Could expand the skill list and add scoring for specific job
+     descriptions.
+
+====================================================================
+END OF DOCUMENTATION
+====================================================================

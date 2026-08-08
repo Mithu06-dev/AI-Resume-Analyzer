@@ -1,0 +1,69 @@
+# ============================================================
+# AI Resume Analyzer (ResumeAI) - Requirements
+# ============================================================
+# This file lists all Python packages required to run this project.
+#
+# To install all dependencies, run the following command after
+# activating your virtual environment:
+#
+#     pip install -r requirements.txt
+#
+# ============================================================
+
+# --- Core Framework ---
+Django==6.1
+
+# --- Resume Text Extraction ---
+# Extracts text from PDF files
+pdfplumber==0.11.10
+
+# Parse DOCX (Word) files
+python-docx==1.2.0
+
+# --- Transitive / Supporting Dependencies ---
+asgiref==3.12.1
+cffi==2.1.1
+charset-normalizer==3.4.9
+cryptography==50.0.0
+lxml==6.1.1
+pdfminer.six==20260107
+pillow==12.3.0
+pycparser==3.0
+pypdfium2==5.12.1
+python-dotenv==1.2.2
+sqlparse==0.5.5
+typing_extensions==4.16.0
+tzdata==2026.3
+
+Package	Version	Simple Meaning	Used For in Your Project
+Django	6.1	Main Python web framework	Website, backend, URLs, forms, database, login, file upload
+
+pdfplumber	0.11.10	PDF text extraction library	Reading text from PDF resumes
+
+python-docx	1.2.0	Word document reader	Reading .docx resumes
+
+asgiref	3.12.1	Django web communication helper	Helps Django communicate with web servers
+
+cffi	2.1.1	Connects Python with C code	Supporting dependency for other packages
+
+charset-normalizer	3.4.9	Detects/handles text encoding	Helps process text correctly
+
+cryptography	50.0.0	Security and encryption library	Supports secure Django operations
+
+lxml	6.1.1	XML/HTML/document processing library	Supports document processing
+
+pdfminer.six	20260107	PDF processing library	Helps extract information from PDFs; used by PDF tools
+
+pillow	12.3.0	Image processing library	Handles images such as PNG/JPG
+
+pycparser	3.0	C-code parser	Supporting dependency for C-related packages
+
+pypdfium2	5.12.1	PDF rendering/processing library	Helps process and render PDF pages
+
+python-dotenv	1.2.2	Reads .env configuration files	Stores API keys, secret keys, and configuration safely
+
+sqlparse	0.5.5	SQL query parser	Supports Django's database operations
+
+typing_extensions	4.16.0	Extra Python type-hinting features	Supports other Python packages
+
+tzdata	2026.3	Time-zone database	Handles dates and time zones

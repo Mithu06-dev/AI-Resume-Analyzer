@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Resume Analysis - ResumeAI</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        Resume<span>AI</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/upload/">New Analysis</a>
+        <a href="/dashboard/">Dashboard</a>
+    </nav>
+
+</header>
+
+
+<div class="result-container">
+
+    <h1>Resume Analysis</h1>
+
+    <p>
+        {{ resume.file.name }}
+    </p>
+
+
+    <div class="score-grid">
+
+        <div class="score-card">
+
+            <h3>ATS Score</h3>
+
+            <strong>
+                {{ resume.ats_score }}/100
+            </strong>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Grammar</h3>
+
+            <strong>
+                {{ resume.grammar_score }}/100
+            </strong>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Keywords</h3>
+
+            <strong>
+                {{ resume.keyword_score }}/100
+            </strong>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Overall</h3>
+
+            <strong>
+                {{ resume.overall_score }}/100
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <section class="result-section">
+
+        <h2>Detected Skills</h2>
+
+        <div class="skills">
+
+            {% for skill in skills %}
+
+                <span>
+                    {{ skill }}
+                </span>
+
+            {% empty %}
+
+                <p>No common technical skills detected.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="result-section">
+
+        <h2>Suggestions</h2>
+
+        <ul>
+
+            {% for suggestion in resume.suggestions.splitlines %}
+
+                <li>
+                    {{ suggestion }}
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </section>
+
+
+    <section class="result-section">
+
+        <h2>Extracted Resume Text</h2>
+
+        <div class="resume-text">
+
+            {{ resume.extracted_text|linebreaks }}
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

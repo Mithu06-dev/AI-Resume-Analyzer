@@ -1,0 +1,92 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ResumeAI - AI Resume Analyzer</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        HireWise <span>AI</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/upload/">Analyze Resume</a>
+        <a href="/dashboard/">Dashboard</a>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <p class="badge">
+            AI POWERED RESUME ANALYZER
+        </p>
+
+        <h1>
+            Make Your Resume
+            <span>Job Ready.</span>
+        </h1>
+
+        <p class="description">
+            Upload your resume and get an instant analysis of
+            ATS compatibility, skills, keywords and improvements.
+        </p>
+
+        <a href="/upload/" class="primary-btn">
+            Analyze My Resume →
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <h2>What We Analyze</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <h3>📊 ATS Score</h3>
+            <p>
+                Check how compatible your resume is with
+                Applicant Tracking Systems.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>🔎 Skill Analysis</h3>
+            <p>
+                Identify technical skills mentioned in your resume.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>💡 Suggestions</h3>
+            <p>
+                Get actionable suggestions to improve your resume.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

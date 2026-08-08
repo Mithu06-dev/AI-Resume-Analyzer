@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Dashboard - ResumeAI</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        Resume<span>AI</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/upload/">Upload Resume</a>
+    </nav>
+
+</header>
+
+
+<div class="dashboard">
+
+    <h1>Resume Dashboard</h1>
+
+    <p>
+        Your previous resume analyses
+    </p>
+
+
+    <div class="resume-list">
+
+        {% for resume in resumes %}
+
+        <div class="resume-card">
+
+            <h3>
+                {{ resume.file.name }}
+            </h3>
+
+            <p>
+                Uploaded:
+                {{ resume.uploaded_at|date:"d M Y" }}
+            </p>
+
+            <div class="dashboard-score">
+                {{ resume.overall_score }}/100
+            </div>
+
+            <a href="/result/{{ resume.id }}/">
+                View Analysis →
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <p>
+            No resumes uploaded yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

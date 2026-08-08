@@ -1,0 +1,98 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analyze Resume - ResumeAI</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        Resume<span>AI</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/upload/">Analyze Resume</a>
+        <a href="/dashboard/">Dashboard</a>
+    </nav>
+
+</header>
+
+
+<main class="upload-container">
+
+    <h1>Analyze Your Resume</h1>
+
+    <p>
+        Upload your resume and let ResumeAI analyze it.
+    </p>
+
+
+    {% if error %}
+
+        <div class="error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <div class="upload-box">
+
+            <div class="upload-icon">
+                📄
+            </div>
+
+            <h2>
+                Upload Your Resume
+            </h2>
+
+            <p>
+                Supported formats: PDF and DOCX
+            </p>
+
+            <input
+                type="file"
+                name="resume"
+                accept=".pdf,.docx"
+                required
+            >
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="primary-btn">
+
+            Analyze Resume
+
+        </button>
+
+    </form>
+
+</main>
+
+</body>
+
+</html>
